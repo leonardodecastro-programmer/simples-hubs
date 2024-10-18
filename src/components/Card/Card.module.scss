@@ -1,0 +1,31 @@
+.card {
+    height: 120px;
+    border-radius: 8px;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.logo {
+    width: 55px;
+    height: 40px;
+    margin-bottom: 16px;
+}
+
+.redirect {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+        size: 14px;
+        font-weight: 600;
+    }
+
+    img {
+        width: 20px;
+        height: 12px;
+    }
+}
