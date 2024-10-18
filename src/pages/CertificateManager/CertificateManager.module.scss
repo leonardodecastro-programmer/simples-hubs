@@ -56,6 +56,11 @@ span {
         &:hover {
             background-color: #45a049;
         }
+
+        &:disabled {
+            background-color: rgba(76, 175, 80, 0.5);
+            cursor: default;
+        }
     }
 }
 

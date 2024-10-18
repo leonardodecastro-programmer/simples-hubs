@@ -5,7 +5,13 @@
                 <img src="@/assets/arrow-right.svg" alt="Logo" />
             </router-link>
             <h1>Gerenciar clientes</h1>
-            <button :class="addButtonClass" @click="addClientCard">Adicionar</button>
+            <button 
+                :class="addButtonClass" 
+                @click="addClientCard" 
+                :disabled="isAddingClient" 
+            >
+                Adicionar
+            </button>
         </div>
         <div :class="cardContainerClass">
             <CardComponent v-for="(client, index) in clients" :key="client.id || index">
@@ -56,6 +62,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import styles from './ClientManager.module.scss';
 import CardComponent from '@/components/Card/Card.vue';
@@ -71,6 +78,7 @@ export default {
     data() {
         return {
             clients: [],
+            isAddingClient: false,
         };
     },
     created() {
@@ -128,6 +136,10 @@ export default {
             }
         },
         addClientCard() {
+            if (this.isAddingClient) {
+                return;
+            }
+            this.isAddingClient = true;
             this.clients.push({
                 id: null,
                 name: '',
@@ -148,6 +160,7 @@ export default {
                 this.clients = this.clients.filter(c => c !== client);
             }
             client.editing = false;
+            this.isAddingClient = false;
         },
         async acceptChanges(client) {
             if (!client.date) {
@@ -173,6 +186,8 @@ export default {
                 }
             } catch (error) {
                 console.error('Erro ao salvar cliente:', error);
+            } finally {
+                this.isAddingClient = false;
             }
         },
         async removeClient(clientId, index) {

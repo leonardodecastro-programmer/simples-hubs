@@ -5,7 +5,13 @@
                 <img src="@/assets/arrow-right.svg" alt="Logo" />
             </router-link>
             <h1>Gerenciar certificados</h1>
-            <button :class="addButtonClass" @click="addCertificateCard">Adicionar</button>
+            <button 
+                :class="addButtonClass" 
+                @click="addCertificateCard" 
+                :disabled="isAddingClient" 
+            >
+                Adicionar
+            </button>
         </div>
         <div :class="cardContainerClass">
             <CardComponent v-for="(certificate, index) in certificates" :key="certificate.id || index">
@@ -83,6 +89,7 @@ export default {
     data() {
         return {
             certificates: [],
+            isAddingClient: false,
         };
     },
     created() {
@@ -137,6 +144,10 @@ export default {
             }
         },
         addCertificateCard() {
+            if (this.isAddingClient) {
+                return;
+            }
+            this.isAddingClient = true;
             this.certificates.push({
                 id: null,
                 type: '',
@@ -157,6 +168,7 @@ export default {
                 this.certificates = this.certificates.filter(c => c !== certificate);
             }
             certificate.editing = false;
+            this.isAddingClient = false; 
         },
         async acceptChanges(certificate) {
             if (!certificate.type || !certificate.validity) {
@@ -184,6 +196,8 @@ export default {
                 }
             } catch (error) {
                 console.error('Erro ao salvar certificado:', error);
+            } finally {
+                this.isAddingClient = false;
             }
         },
         async removeCertificate(certificateId, index) {
